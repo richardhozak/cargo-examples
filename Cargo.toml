@@ -1,0 +1,11 @@
+[package]
+name = "cargo-examples"
+version = "0.1.0"
+authors = ["Richard Hozák"]
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.65"
+clap = { version = "3.2.22", features = ["derive"] }
+tap = "1.0.1"
+xshell = "0.2.2"
