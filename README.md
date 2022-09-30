@@ -1,6 +1,6 @@
 # cargo-examples
 
-`cargo-examples` is a cargo subcommand that you can run in any crate tu run all examples in succession.
+`cargo-examples` is a cargo subcommand that lets you run all examples in any locally cloned crate.
 
 My main motivation for this tool is that when checking out a library or binary, I want to run all the examples so I can quickly grasp the inner workings of a crate interactively.
 
