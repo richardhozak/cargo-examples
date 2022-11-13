@@ -168,13 +168,10 @@ fn main() -> anyhow::Result<()> {
                     sh,
                     "cargo run --manifest-path {manifest_path} --example {name}"
                 )
-            },
+            }
             Example::SubProject(manifest_path) => {
-                cmd!(
-                    sh,
-                    "cargo run --manifest-path {manifest_path}"
-                )
-            },
+                cmd!(sh, "cargo run --manifest-path {manifest_path}")
+            }
         };
 
         command.run()?;
