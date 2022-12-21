@@ -40,6 +40,10 @@ struct Examples {
     /// Do not run any examples, useful when combined with `--list`, or `--from` + `--print`
     #[clap(short, long)]
     no_run: bool,
+
+    /// Pass these arguments along to cargo when running
+    #[clap(raw = true)]
+    cargo_args: Option<String>,
 }
 
 enum Example {
@@ -174,7 +178,11 @@ fn main() -> anyhow::Result<()> {
             }
         };
 
-        command.run()?;
+        if let Some(ref args) = cli.cargo_args {
+            command.arg(args).run()?;
+        } else {
+            command.run()?;
+        }
     }
 
     Ok(())
