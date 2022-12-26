@@ -1,6 +1,6 @@
 [package]
 name = "cargo-examples"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Richard Hozák"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -21,6 +21,6 @@ keywords = [
 
 [dependencies]
 anyhow = "1.0.65"
-clap = { version = "3.2.22", features = ["derive"] }
+clap = { version = "4.0", features = ["derive"] }
 tap = "1.0.1"
 xshell = "0.2.2"
