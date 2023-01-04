@@ -41,6 +41,16 @@ struct Examples {
     #[clap(short, long)]
     no_run: bool,
 
+    /// Skip <EXAMPLE> when running. (--skip=example1,example2)
+    #[clap(
+        short,
+        long,
+        value_parser,
+        use_value_delimiter = true,
+        value_name = "EXAMPLE"
+    )]
+    skip: Vec<OsString>,
+
     /// Pass these arguments along to cargo when running
     #[clap(raw = true)]
     cargo_args: Option<String>,
@@ -142,6 +152,11 @@ fn main() -> anyhow::Result<()> {
             if from == example.name().unwrap() {
                 run_examples = true;
             }
+        }
+
+        // skip any examples specified in the `skip` arg
+        if cli.skip.iter().any(|s| *s == example.name().unwrap()) {
+            continue;
         }
 
         if !run_examples {
