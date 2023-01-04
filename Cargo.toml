@@ -24,3 +24,4 @@ anyhow = "1.0.65"
 clap = { version = "4.0", features = ["derive"] }
 tap = "1.0.1"
 xshell = "0.2.2"
+cargo_toml = "0.14.0"
