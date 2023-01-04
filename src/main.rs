@@ -6,6 +6,7 @@ use std::{
 };
 
 use anyhow::{anyhow, Context};
+use cargo_toml::Manifest;
 use clap::Parser;
 use tap::Tap;
 use xshell::{cmd, Shell};
@@ -50,6 +51,7 @@ enum Example {
     File(PathBuf),
     MultiFile(PathBuf),
     SubProject(PathBuf),
+    Named(OsString),
 }
 
 impl Example {
@@ -59,6 +61,7 @@ impl Example {
             Example::SubProject(path) | Example::MultiFile(path) => {
                 Some(path.parent()?.file_name()?)
             }
+            Example::Named(name) => Some(name.as_os_str()),
         }
     }
 }
@@ -94,7 +97,7 @@ fn main() -> anyhow::Result<()> {
     //     lot of projects use this for more involved examples
     //   - this can be ran as `cargo run --manifest-path examples/example_baz/Cargo.toml`
 
-    let examples: Vec<Example> = fs::read_dir(examples_dir)?
+    let mut examples: Vec<Example> = fs::read_dir(examples_dir)?
         .filter_map(|entry| entry.ok()) // ignore entries with errors
         .map(|entry| entry.path())
         .filter_map(|path| {
@@ -125,6 +128,15 @@ fn main() -> anyhow::Result<()> {
         .filter(|example| example.name().is_some())
         .collect::<Vec<_>>()
         .tap_mut(|examples| examples.sort_by(|a, b| a.name().unwrap().cmp(b.name().unwrap()))); // sort the files, so output and execution is deterministic when using `from`
+
+    let manifest = Manifest::from_path(manifest_path.clone())?;
+    for name in manifest
+        .example
+        .iter()
+        .filter_map(|product| product.name.clone())
+    {
+        examples.push(Example::Named(name.into()))
+    }
 
     if cli.list {
         // print all examples, unfiltered
@@ -159,7 +171,7 @@ fn main() -> anyhow::Result<()> {
         sh.change_dir(root_dir);
 
         let command = match example {
-            Example::File(_) => {
+            Example::File(_) | Example::Named(_) => {
                 let name = example.name().unwrap();
                 cmd!(
                     sh,
