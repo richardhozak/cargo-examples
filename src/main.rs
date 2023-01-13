@@ -129,6 +129,8 @@ fn main() -> anyhow::Result<()> {
         .collect::<Vec<_>>()
         .tap_mut(|examples| examples.sort_by(|a, b| a.name().unwrap().cmp(b.name().unwrap()))); // sort the files, so output and execution is deterministic when using `from`
 
+    // Examples can also exist in an arbitrary path defined in an [[example]] block in the project's manifest
+
     let manifest = Manifest::from_path(manifest_path.clone())?;
     for name in manifest
         .example
