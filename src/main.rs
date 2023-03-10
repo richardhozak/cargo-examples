@@ -52,6 +52,16 @@ struct Examples {
     )]
     skip: Vec<OsString>,
 
+    /// Run examples with <FEATURES> enabled. (--features=feature1,feature2)
+    #[clap(
+        short = 'F',
+        long,
+        value_parser,
+        use_value_delimiter = true,
+        value_name = "FEATURES"
+    )]
+    features: Vec<String>,
+
     /// Pass these arguments along to cargo when running
     #[clap(raw = true)]
     cargo_args: Option<String>,
@@ -160,6 +170,15 @@ fn main() -> anyhow::Result<()> {
     // if `from` is not specified run all examples
     let mut run_examples = cli.from.is_none();
 
+    // if 'features' is specified pass them allong to cargo
+    let features = if cli.features.is_empty() {
+        String::from("")
+    } else {
+        let mut f = "--features=".to_owned();
+        f.push_str(cli.features.join(",").as_str());
+        f
+    };
+
     for example in &examples {
         if let Some(ref from) = cli.from {
             // execute only example starting with `from`, if `from` is specified
@@ -192,18 +211,18 @@ fn main() -> anyhow::Result<()> {
                 let name = example.name().unwrap();
                 cmd!(
                     sh,
-                    "cargo run --manifest-path {manifest_path} --example {name}"
+                    "cargo run --manifest-path {manifest_path} --example {name} {features}"
                 )
             }
             Example::MultiFile(_) => {
                 let name = example.name().unwrap();
                 cmd!(
                     sh,
-                    "cargo run --manifest-path {manifest_path} --example {name}"
+                    "cargo run --manifest-path {manifest_path} --example {name} {features}"
                 )
             }
             Example::SubProject(manifest_path) => {
-                cmd!(sh, "cargo run --manifest-path {manifest_path}")
+                cmd!(sh, "cargo run --manifest-path {manifest_path} {features}")
             }
         };
 

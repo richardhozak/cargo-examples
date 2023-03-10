@@ -34,17 +34,18 @@ There are cli options that you can use to modify how the examples are ran:
 
 ```
 Cargo subcommand to run all examples for any locally cloned crate
-
 USAGE:
-    cargo examples [OPTIONS]
-
+    cargo examples [OPTIONS] [-- <CARGO_ARGS>...]
+ARGUMENTS:
+    [CARGO_ARGS]...  Pass these arguments along to cargo when running
 OPTIONS:
-    -f, --from <EXAMPLE>          Run example starting with <EXAMPLE>
-    -h, --help                    Print help information
-    -l, --list                    List *all* examples and print them out before running any
-        --manifest-path <FILE>    Path to Cargo.toml
-    -n, --no-run                  Do not run any examples, useful when combined with `--list`, or
-                                  `--from` + `--print`
-    -p, --print                   Print example name before running
-    -V, --version                 Print version information
+        --manifest-path <FILE>  Path to Cargo.toml
+    -l, --list                  List *all* examples and print them out before running any
+    -p, --print                 Print example name before running
+    -f, --from <EXAMPLE>        Run example starting with <EXAMPLE>
+    -n, --no-run                Do not run any examples, useful when combined with `--list`, or `--from` + `--print`
+    -s, --skip <EXAMPLE>        Skip <EXAMPLE> when running. (--skip=example1,example2)
+    -F, --features <FEATURES>   Run examples with <FEATURES> enabled. (--features=feature1,feature2)
+    -h, --help                  Print help
+    -V, --version               Print version
 ```
