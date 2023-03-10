@@ -4,7 +4,7 @@
 
 My main motivation for this tool is that when checking out a library or binary, I want to run all the examples so I can quickly grasp the inner workings of a crate interactively.
 
-This tool supports running examples the same way `cargo run --example <name>` does, meaning it can run single files from `examples` directory and [multi-file](https://doc.rust-lang.org/cargo/guide/project-layout.html) examples in `examples` directory.
+This tool supports running examples the same way `cargo run --example <name>` does, meaning it can run single files from `examples` directory, [multi-file](https://doc.rust-lang.org/cargo/guide/project-layout.html) examples in `examples` directory and [manifest-based](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#examples) example specified in projects `Cargo.toml`.
 
 In addition to this `cargo-examples` allows you to run subproject examples from `examples` directory, meaning subproject directories with `Cargo.toml` that sit in `examples` directory, this can be seen in many projects across Rust ecosystem which have more involved examples, cargo cannot run this out-of-the box with `cargo run --example <name>`.
 
@@ -16,6 +16,9 @@ In addition to this `cargo-examples` allows you to run subproject examples from 
 
 > **Subproject example**  
 > `<project>/examples/baz/Cargo.toml`
+
+> **Manifest based example**
+> `[[example]]` in `Cargo.toml`
 
 ## Installing
 
