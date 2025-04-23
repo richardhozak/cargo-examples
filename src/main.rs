@@ -5,11 +5,11 @@ use std::{
     str::FromStr,
 };
 
-use anyhow::{anyhow, Context};
+use anyhow::{Context, anyhow};
 use cargo_toml::Manifest;
 use clap::Parser;
 use tap::Tap;
-use xshell::{cmd, Shell};
+use xshell::{Shell, cmd};
 
 #[derive(Parser)] // requires `derive` feature
 #[clap(name = "cargo")]
@@ -86,6 +86,7 @@ impl Example {
     }
 }
 
+#[allow(clippy::too_many_lines)]
 fn main() -> anyhow::Result<()> {
     let Cargo::Examples(cli) = Cargo::parse();
     let sh = Shell::new()?;
@@ -118,12 +119,12 @@ fn main() -> anyhow::Result<()> {
     //   - this can be ran as `cargo run --manifest-path examples/example_baz/Cargo.toml`
 
     let mut examples: Vec<Example> = fs::read_dir(examples_dir)?
-        .filter_map(|entry| entry.ok()) // ignore entries with errors
+        .filter_map(std::result::Result::ok) // ignore entries with errors
         .map(|entry| entry.path())
         .filter_map(|path| {
             if path.is_file() {
                 // filter out files with .rs extension
-                if path.extension().map_or(false, |ext| ext == "rs") {
+                if path.extension().is_some_and(|ext| ext == "rs") {
                     // take the file name without extension
                     return Some(Example::File(path));
                 }
@@ -157,7 +158,7 @@ fn main() -> anyhow::Result<()> {
         .iter()
         .filter_map(|product| product.name.clone())
     {
-        examples.push(Example::Named(name.into()))
+        examples.push(Example::Named(name.into()));
     }
 
     if cli.list {
@@ -172,7 +173,7 @@ fn main() -> anyhow::Result<()> {
 
     // if 'features' is specified pass them allong to cargo
     let features = if cli.features.is_empty() {
-        String::from("")
+        String::new()
     } else {
         let mut f = "--features=".to_owned();
         f.push_str(cli.features.join(",").as_str());

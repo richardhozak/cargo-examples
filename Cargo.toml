@@ -2,7 +2,7 @@
 name = "cargo-examples"
 version = "0.5.0"
 authors = ["Richard Hozák"]
-edition = "2021"
+edition = "2024"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 homepage = "https://github.com/zxey/cargo-examples"
@@ -20,8 +20,8 @@ keywords = [
 ]
 
 [dependencies]
-anyhow = "1.0.65"
-clap = { version = "4.0", features = ["derive"] }
+anyhow = "1.0.97"
+clap = { version = "4.5", features = ["derive"] }
 tap = "1.0.1"
-xshell = "0.2.2"
-cargo_toml = "0.14.0"
+xshell = "0.2.7"
+cargo_toml = "0.22.1"
